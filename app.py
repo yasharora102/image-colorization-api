@@ -4,28 +4,18 @@ from script import *
 from fastapi.responses import HTMLResponse
 import os
 from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
 
 static_path = os.path.join(os.path.dirname(__file__), "static")
 app.mount("/static", StaticFiles(directory=static_path), name="static")
+templates = Jinja2Templates(directory="templates")
 
 
 @app.get("/")
-def main():
-    return HTMLResponse(
-        """
-        <html>
-            <body>
-                <form action="/upload_image" enctype="multipart/form-data" method="post">
-                    <input name="file" type="file">
-                    <input type="submit">
-                </form>
-            </body>
-        </html>
-    """
-    )
-
+def main(request: Request):
+    return templates.TemplateResponse("upload.html", {"request": request})
 
 @app.post("/upload_image")
 async def upload_image(file: UploadFile, request: Request):

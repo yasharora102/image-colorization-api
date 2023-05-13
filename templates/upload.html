@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Image Colorizer</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <center>
+    <h1>Image Colorizer</h1>
+    <div class="container">
+    <form action="/upload_image" enctype="multipart/form-data" method="post">
+      <div class="form-group">
+        <div class="title">Welcome</div>
+        <div class="subtitle">Upload a GreyScale Image</div>
+
+        <div class="input-container ic2">
+          <!-- <label for="file" style="color:white;"> CHOOSE </label> -->
+          <input class="form-control" id="file" name="file" type="file">
+        </div>
+      </div>
+      <button type="submit" class="submit">Submit</button>
+    </form>
+</div>
+</center>
+  </body>
+</html>
