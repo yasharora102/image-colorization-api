@@ -85,3 +85,22 @@ print(response.json())
     </td>
   </tr>
 </table>
+
+
+
+## Development
+
+- For creating new features, create new branch locally and work on it.
+- After testing the feature, create a PR.
+- To fetch new changes
+
+```bash
+    $ git fetch upstream
+    $ git rebase upstream/master
+```
+
+## Formatting
+
+- Use `black` for formatting the code.
+- `black` is already installed in the project dependencies.
+- To format the code, run `black .` in the project root directory.
