@@ -1,7 +1,7 @@
 from fastapi import FastAPI, UploadFile, Request
 import uvicorn
 from script import *
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse,FileResponse
 import os
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -17,7 +17,24 @@ templates = Jinja2Templates(directory="templates")
 def main(request: Request):
     return templates.TemplateResponse("upload.html", {"request": request})
 
-@app.post("/upload_image")
+
+
+@app.post("/upload")  # This is the endpoint for the API for the CLI
+async def upload_image(file: UploadFile, request: Request):
+    data = await file.read()
+    nparr = np.frombuffer(data, np.uint8)
+    colorize_image(nparr)
+
+    # move file to static folder
+    os.rename("colorized_image.png", "static/colorized_image.png")
+
+    download_link = os.path.join(
+        os.path.dirname(__file__), "static/colorized_image.png"
+    )
+    return FileResponse(download_link, filename="color.png")
+
+
+@app.post("/upload_image") # This is the endpoint for the API for the webapp
 async def upload_image(file: UploadFile, request: Request):
     data = await file.read()
     nparr = np.frombuffer(data, np.uint8)
