@@ -44,16 +44,42 @@ uvicorn app:app --reload --port 8080
 import requests
 import os
 
-url = "http://127.0.0.1:8080/upload_image"
+url = "http://127.0.0.1:8080/upload" 
 
 file_path = "images.jpeg"  # Replace with the path to your image file
 
 with open(file_path, "rb") as file:
     files = {"file": file}
     response = requests.post(url, files=files)
-print(response.json())
+
+if response.status_code == 200:
+    with open("output.jpg", "wb") as file:
+        file.write(response.content)
+    print("Image saved successfully")
+else:
+    print("Error:", response.text)
 ```
-## Image Grid
+
+## Running the Web App
+
+- Run the server:
+
+```bash
+uvicorn app:app --reload --port 8080
+```
+
+- Go to `http://127.0.0.1:8080/` to view the application.
+
+<!-- Put Image -->
+##### Web App
+![Web App](examples/Screenshots/Landing.png)
+
+##### Download Page
+![Download Page](examples/Screenshots/Download.png)
+
+View the tutorial on [YouTube](https://youtu.be/jv8AyJlVT3g).
+
+## Sample Images
 <table>
     <tr>
         <td>
@@ -96,7 +122,7 @@ print(response.json())
 
 ```bash
     $ git fetch upstream
-    $ git rebase upstream/master
+    $ git rebase upstream/main
 ```
 
 ## Formatting
