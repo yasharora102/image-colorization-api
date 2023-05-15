@@ -29,7 +29,6 @@ def does_file_exist(dir, prefix):
 def get_file_with_extension(dir, prefix):
     for s in os.listdir(dir):
         if os.path.splitext(s)[0] == prefix and os.path.isfile(os.path.join(dir, s)):
-            print(s)
             return s
 
     return None
