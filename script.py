@@ -15,7 +15,7 @@ net.getLayer(net.getLayerId("conv8_313_rh")).blobs = [
 ]
 
 
-def colorize_image(file):
+def colorize_image(file, extension):
     image = cv2.imdecode(np.frombuffer(file, np.uint8), cv2.IMREAD_COLOR)
     scaled = image.astype("float32") / 255.0
     lab = cv2.cvtColor(scaled, cv2.COLOR_BGR2LAB)
@@ -34,6 +34,6 @@ def colorize_image(file):
     colorized = cv2.cvtColor(colorized, cv2.COLOR_LAB2BGR)
     colorized = (255 * colorized).astype("uint8")
 
-    cv2.imwrite("colorized_image.png", colorized)
+    cv2.imwrite("colorized_image."+extension, colorized)
 
     return colorized

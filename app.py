@@ -1,7 +1,7 @@
 from fastapi import FastAPI, UploadFile, Request
 import uvicorn
 from script import *
-from fastapi.responses import HTMLResponse,FileResponse
+from fastapi.responses import HTMLResponse, FileResponse
 import os
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
