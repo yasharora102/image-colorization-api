@@ -32,7 +32,7 @@ async def upload_image(file: UploadFile, request: Request):
     colorize_image(nparr, extension)
 
     # move file to static folder
-    os.rename("colorized_image.png", "static/colorized_image." + extension)
+    os.rename("colorized_image."+extension, "static/colorized_image." + extension)
 
     download_link = os.path.join(
         os.path.dirname(__file__), "static/colorized_image." + extension
