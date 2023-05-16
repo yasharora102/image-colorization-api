@@ -34,6 +34,6 @@ def colorize_image(file, extension):
     colorized = cv2.cvtColor(colorized, cv2.COLOR_LAB2BGR)
     colorized = (255 * colorized).astype("uint8")
 
-    cv2.imwrite("colorized_image."+extension, colorized)
+    cv2.imwrite("colorized_image." + extension, colorized)
 
     return colorized

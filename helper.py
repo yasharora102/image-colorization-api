@@ -1,13 +1,14 @@
 import os
 
-def get_file_extension(file_with_extension: str)->str:
+
+def get_file_extension(file_with_extension: str) -> str:
     """
 
     :param file_with_extension: file name with extension. for ecxample image.png or image.jpeg
 
     :return: extenstion of image like png jpeg
     """
-    list_of_filename_and_format = file_with_extension.split('.')
+    list_of_filename_and_format = file_with_extension.split(".")
     file_name = list_of_filename_and_format[0]
     extenstion = list_of_filename_and_format[1]
     return extenstion
@@ -25,6 +26,7 @@ def does_file_exist(dir, prefix):
             return True
 
     return False
+
 
 def get_file_with_extension(dir, prefix):
     for s in os.listdir(dir):
