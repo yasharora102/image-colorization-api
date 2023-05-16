@@ -1,10 +1,11 @@
 from fastapi import FastAPI, UploadFile, Request
 import uvicorn
 from script import *
-from fastapi.responses import HTMLResponse,FileResponse
+from fastapi.responses import HTMLResponse, FileResponse
 import os
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from helper import get_file_extension, does_file_exist, get_file_with_extension
 
 app = FastAPI()
 
@@ -18,43 +19,53 @@ def main(request: Request):
     return templates.TemplateResponse("upload.html", {"request": request})
 
 
-
 @app.post("/upload")  # This is the endpoint for the API for the CLI
 async def upload_image(file: UploadFile, request: Request):
+    # if the colorized_image was saved from earlier run, delete it.
+    if does_file_exist("static/", "colorized_image"):
+        os.remove("static/" + get_file_with_extension("static", "colorized_image"))
+
+    print(file.filename)
+    extension = get_file_extension(file.filename)
     data = await file.read()
     nparr = np.frombuffer(data, np.uint8)
-    colorize_image(nparr)
+    colorize_image(nparr, extension)
 
     # move file to static folder
-    os.rename("colorized_image.png", "static/colorized_image.png")
+    os.rename("colorized_image."+extension, "static/colorized_image." + extension)
 
     download_link = os.path.join(
-        os.path.dirname(__file__), "static/colorized_image.png"
+        os.path.dirname(__file__), "static/colorized_image." + extension
     )
     return FileResponse(download_link, filename="color.png")
 
 
-@app.post("/upload_image") # This is the endpoint for the API for the webapp
+@app.post("/upload_image")  # This is the endpoint for the API for the webapp
 async def upload_image(file: UploadFile, request: Request):
+    if not file.filename:
+        error = "please choose a file"
+        return templates.TemplateResponse(
+            "upload.html", {"request": request, "error": error}
+        )
+    extension = get_file_extension(file.filename)
+
+    # if the colorized_image was saved from earlier run, delete it.
+    if does_file_exist("static/", "colorized_image"):
+        os.remove("static/" + get_file_with_extension("static", "colorized_image"))
+
     data = await file.read()
     nparr = np.frombuffer(data, np.uint8)
-    colorize_image(nparr)
+    colorize_image(nparr, extension)
 
-    file_path = "colorized_image.png"
+    colored_image_path = "static/" + "colorized_image." + extension
 
     # move file to static folder
-    os.rename("colorized_image.png", "static/colorized_image.png")
+    os.rename("colorized_image." + extension, colored_image_path)
 
-    download_link = "/static/colorized_image.png"
-    return HTMLResponse(
-        f"""
-        <html>
-            <body>
-                <h1>Image uploaded and processed successfully!</h1>
-                <p>Download the processed image: <a href="{download_link}" download>Download</a></p>
-            </body>
-        </html>
-    """
+    download_link = colored_image_path
+
+    return templates.TemplateResponse(
+        "result.html", {"request": request, "download_link": download_link}
     )
 
 
