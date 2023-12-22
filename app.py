@@ -9,6 +9,16 @@ from helper import get_file_extension, does_file_exist, get_file_with_extension
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["POST", "GET"],
+    allow_headers=["*"],
+    expose_headers=["*"]
+)
+
+
 static_path = os.path.join(os.path.dirname(__file__), "static")
 app.mount("/static", StaticFiles(directory=static_path), name="static")
 templates = Jinja2Templates(directory="templates")
