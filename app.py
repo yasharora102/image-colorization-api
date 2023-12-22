@@ -6,6 +6,7 @@ import os
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from helper import get_file_extension, does_file_exist, get_file_with_extension
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
